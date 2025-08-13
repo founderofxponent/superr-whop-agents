@@ -52,7 +52,7 @@ const INTEGRATIONS = [
 	{ value: 'whop-api', label: 'Whop API' }
 ];
 
-export default function Page() {
+export default function AgentsPage() {
 	const [selectedAgent, setSelectedAgent] = useState<string | null>(null);
 	const [agents, setAgents] = useState<Agent[]>([
 		{

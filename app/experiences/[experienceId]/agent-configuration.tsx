@@ -7,14 +7,11 @@ import {
 	Card, 
 	Badge, 
 	Separator, 
-	Link,
 	TextField,
 	TextArea,
 	Select,
 	Switch,
-	Checkbox,
-	RadioGroup,
-	RadioGroupItem
+	Checkbox
 } from "frosted-ui";
 import { useState } from 'react';
 
@@ -52,7 +49,21 @@ const INTEGRATIONS = [
 	{ value: 'whop-api', label: 'Whop API' }
 ];
 
-export default function Page() {
+interface AgentConfigurationProps {
+	user: any;
+	experience: any;
+	accessLevel: string;
+	userId: string;
+	experienceId: string;
+}
+
+export default function AgentConfiguration({ 
+	user, 
+	experience, 
+	accessLevel, 
+	userId, 
+	experienceId 
+}: AgentConfigurationProps) {
 	const [selectedAgent, setSelectedAgent] = useState<string | null>(null);
 	const [agents, setAgents] = useState<Agent[]>([
 		{
@@ -115,13 +126,25 @@ export default function Page() {
 	return (
 		<div className="min-h-screen p-6 bg-gray-1">
 			<div className="max-w-6xl mx-auto">
+				{/* Header with user info */}
 				<div className="mb-8">
-					<Heading size="9" className="mb-4">
-						Agent Configuration
-					</Heading>
-					<Text size="5" color="gray">
-						Manage and configure your AI agents
-					</Text>
+					<div className="flex items-center justify-between mb-4">
+						<div>
+							<Heading size="9" className="mb-2">
+								Agent Configuration
+							</Heading>
+							<Text size="5" color="gray">
+								Manage and configure your AI agents for {experience.name}
+							</Text>
+						</div>
+						<div className="text-right">
+							<Text size="2" color="gray">Welcome, <strong>{user.name}</strong></Text>
+							<br />
+							<Badge color={accessLevel === 'admin' ? 'green' : 'blue'}>
+								{accessLevel}
+							</Badge>
+						</div>
+					</div>
 				</div>
 
 				<div className="grid gap-6 lg:grid-cols-3">
@@ -325,15 +348,25 @@ export default function Page() {
 								</div>
 							</div>
 
-							{/* Action Buttons */}
-							<div className="flex gap-3 justify-end">
-								<Button variant="soft" color="gray">
-									Cancel
-								</Button>
-								<Button onClick={handleCreateAgent}>
-									{selectedAgent ? 'Update Agent' : 'Create Agent'}
-								</Button>
-							</div>
+							{/* Action Buttons - Only show for admins */}
+							{accessLevel === 'admin' && (
+								<div className="flex gap-3 justify-end">
+									<Button variant="soft" color="gray">
+										Cancel
+									</Button>
+									<Button onClick={handleCreateAgent}>
+										{selectedAgent ? 'Update Agent' : 'Create Agent'}
+									</Button>
+								</div>
+							)}
+
+							{accessLevel !== 'admin' && (
+								<div className="text-center p-4 bg-gray-2 rounded">
+									<Text size="2" color="gray">
+										Only administrators can create or modify agents
+									</Text>
+								</div>
+							)}
 						</Card>
 					</div>
 				</div>

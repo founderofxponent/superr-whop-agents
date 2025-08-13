@@ -1,3 +1,10 @@
-import { frostedThemePlugin } from "@whop/react/tailwind";
+import { frostedThemePlugin } from 'frosted-ui';
 
-export default { plugins: [frostedThemePlugin()] };
+export default {
+  darkMode: ['class'],
+  content: [],
+  theme: {
+    extend: {},
+  },
+  plugins: [frostedThemePlugin()],
+};
